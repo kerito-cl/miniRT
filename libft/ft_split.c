@@ -6,13 +6,13 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:40:11 by mquero            #+#    #+#             */
-/*   Updated: 2024/10/30 14:50:11 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/22 15:54:18 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	freesplit(char **strs)
+void	freesplit(char **strs)
 {
 	int	i;
 

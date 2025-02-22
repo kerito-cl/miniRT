@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/19 13:45:28 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/22 19:12:01 by mquero           ###   ########.fr       */
+/*   Created: 2025/02/22 18:35:21 by mquero            #+#    #+#             */
+/*   Updated: 2025/02/22 18:40:08 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "MLX42/MLX42.h"
 #include "mini_rt.h"
 
-int	main(int argc, char **argv)
+void    new_vec3(t_vec3 *vec3, char **cvec)
 {
-	t_info	info;
-
-	if (argc != 2 || check_if_rt(argv[1]) == 0)
-			throw_error(0);
-	ft_bzero(&info, sizeof(t_info));
-	info.arena = arena_init(1024);
-	parse(argv[1], &info);
-	arena_free(info.arena);
-	//c.fd_folder = open(argv[1], O_DIRECTORY);
-	return (0);	
+    vec3->x = strtod(cvec[0], NULL);
+    vec3->y = strtod(cvec[1], NULL);
+    vec3->z = strtod(cvec[2], NULL);
+    if (cvec != NULL)
+        freesplit(cvec);
 }

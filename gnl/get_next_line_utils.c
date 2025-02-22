@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 15:40:11 by mquero            #+#    #+#             */
-/*   Updated: 2024/11/14 16:33:08 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/22 16:09:49 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char *s1, char const *s2, int n)
+char	*ft_strjoin_free(char *s1, char const *s2, int n)
 {
 	int		i;
 	int		j;

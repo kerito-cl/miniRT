@@ -1,19 +1,23 @@
-NAME	:= minirt
+NAME	:= miniRT
 LIBFT_DIR	:= libft
 LIBFT_LIB	:= $(LIBFT_DIR)/libft.a
-CFLAGS	:= -Wall -Werror -Wextra -Wunreachable-code -Ofast
+CFLAGS	:= -Wunreachable-code -Ofast
 LIBMLX	:= ./MLX42
 LIB_URL := https://github.com/codam-coding-college/MLX42
 HEADERS	:= -I ./include -I $(LIBMLX)/include -I $(LIBFT_DIR)
 LIBS	:= $(LIBMLX)/build/libmlx42.a
 
-OBJ_DIR			:= obj
-SRCS	:= src/main.c src/error.c \
-			gnl/get_next_line.c gnl/get_next_line_utils.c
-OBJS	:= ${SRCS:.c=.o}
-LIBFT			:= -L$(LIBFT_DIR) -lft
+OBJ_DIR	:= obj
+SRCS	:= src/main.c src/error.c src/parse.c src/arena.c src/utils.c \
+			src/assign_geo_objects.c \
+		  gnl/get_next_line.c gnl/get_next_line_utils.c
+OBJS	:= $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRCS))
+LIBFT	:= -L$(LIBFT_DIR) -lft
 
-all: libmlx libft $(NAME)
+all: libmlx libft $(OBJ_DIR) $(NAME)
+
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)/src $(OBJ_DIR)/gnl
 
 libft:
 	@echo "building libft"
@@ -26,14 +30,15 @@ $(LIBS): $(LIBMLX)
 
 $(LIBMLX):
 	@git clone $(LIB_URL) $(LIBMLX)
-%.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
+
+$(OBJ_DIR)/%.o: %.c | $(OBJ_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@ $(HEADERS) && printf "Compiling: $(notdir $<)\n"
 
 $(NAME): $(OBJS) $(LIBS)
 	@$(CC) $(OBJS) $(LIBS) $(LIBFT) $(HEADERS) -ldl -lglfw -pthread -lm -o $(NAME)
 
 clean:
-	@rm -rf $(OBJS)
+	@rm -rf $(OBJ_DIR)
 	@rm -rf $(LIBMLX)/build
 	@make -C $(LIBFT_DIR) clean
 
@@ -42,6 +47,7 @@ fclean: clean
 	@rm -rf $(LIBMLX)
 	@make -C $(LIBFT_DIR) fclean
 
-re: clean all
+re: fclean all
 
-.PHONY: all, clean, fclean, re, libmlx, libft
+.PHONY: all clean fclean re libmlx libft
+

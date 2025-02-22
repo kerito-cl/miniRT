@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:37:19 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/19 13:49:23 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/22 15:45:10 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	check_error(char *map)
 	fd = open(map, O_RDONLY);
 	if (fd == -1)
 		return (0);
+	close(fd);
 	return (1);
 }
 
@@ -33,7 +34,7 @@ void	throw_error(int flag)
 {
 	if (flag == 0)
 	{
-		printf("Not passing correct arguments\n");
+		printf(".rt file required as input\n");
 		exit(1);
 	}
 	if (flag == 1)
