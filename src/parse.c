@@ -6,11 +6,12 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:40:27 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/22 19:12:23 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/23 14:54:15 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_rt.h"
+
 
 static  void assign_camera_info(t_info *info, char **split)
 {
@@ -38,7 +39,6 @@ static  void assign_ambient_info(t_info *info, char **split)
 
     info->a.ratio = strtod(split[1], NULL);
     rgb = ft_split(split[2], ',');
-    printf("%s\n",split[2]);
     if (!rgb)
     {
         arena_free(info->arena);
@@ -67,6 +67,24 @@ static  void assign_light_info(t_info *info, char **split)
     }
     new_vec3(&(info->l).point, vec);
 }
+
+static  void assign_all(t_info *info, char **split)
+{
+    if (ft_strncmp(split[0], "A", ft_strlen(split[0])) == 0)
+        assign_ambient_info(info, split);
+    else if (ft_strncmp(split[0], "C", ft_strlen(split[0])) == 0)
+        assign_camera_info(info, split);
+    else if (ft_strncmp(split[0], "L", ft_strlen(split[0])) == 0)
+        assign_light_info(info, split);
+    else if (ft_strncmp(split[0], "pl", ft_strlen(split[0])) == 0)
+        assign_plane_info(info, split);
+    else if (ft_strncmp(split[0], "sp", ft_strlen(split[0])) == 0)
+        assign_sphere_info(info, split);
+    else if (ft_strncmp(split[0], "cy", ft_strlen(split[0])) == 0)
+        assign_cylinder_info(info, split);
+    freesplit(split);
+}
+
 void    parse(char *file, t_info *info)
 {
     int fd;
@@ -87,19 +105,7 @@ void    parse(char *file, t_info *info)
             arena_free(info->arena);
             exit(1);
         }
-        if (ft_strncmp(split[0], "A", ft_strlen(split[0])) == 0)
-            assign_ambient_info(info, split);
-        else if (ft_strncmp(split[0], "C", ft_strlen(split[0])) == 0)
-            assign_camera_info(info, split);
-        else if (ft_strncmp(split[0], "L", ft_strlen(split[0])) == 0)
-            assign_light_info(info, split);
-        else if (ft_strncmp(split[0], "pl", ft_strlen(split[0])) == 0)
-            assign_plane_info(info, split);
-        else if (ft_strncmp(split[0], "sp", ft_strlen(split[0])) == 0)
-            assign_sphere_info(info, split);
-        else if (ft_strncmp(split[0], "cy", ft_strlen(split[0])) == 0)
-            assign_cylinder_info(info, split);
-        freesplit(split);
+        assign_all(info, split);
         input = get_next_line(fd);
     }
 }

@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 12:37:19 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/22 15:45:10 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/23 00:00:00 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ int	check_error(char *map)
 	return (1);
 }
 
-void	free_all(t_mlx *c)
+void	free_all(t_info *info)
 {
-	mlx_delete_image(c->mlx, c->img);
-	mlx_terminate(c->mlx);
+	mlx_delete_image(info->mlx, info->img);
+	mlx_terminate(info->mlx);
+	arena_free(info->arena);
 	exit(1);
 }
 

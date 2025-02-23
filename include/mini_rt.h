@@ -1,5 +1,8 @@
 #ifndef MINI_RT_H
 # define MINI_RT_H
+# define WIDTH 1980
+# define HEIGHT 1080
+# define INFINITY 1080
 
 # include "MLX42/MLX42.h"
 # include <fcntl.h>
@@ -8,6 +11,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
 # include "libft.h"
 # include "get_next_line.h"
 
@@ -25,12 +29,6 @@ typedef struct s_vec3
 	double	y;
 	double	z;
 }       t_vec3;
-
-typedef struct s_mlx
-{
-	mlx_t			*mlx;
-	mlx_image_t		*img;
-}       t_mlx;
 
 typedef struct s_ray
 {
@@ -84,7 +82,8 @@ typedef struct s_cy
 typedef struct s_info
 {
 	t_arena *arena;
-	t_mlx mlx;
+	mlx_t *mlx;
+	mlx_image_t		*img;
 	t_cam c;
 	t_alight a;
 	t_light	l;
@@ -93,6 +92,9 @@ typedef struct s_info
 	t_cy	cy;
 	t_ray	ray;
 }       t_info;
+
+
+void	print_vec3(t_vec3 vec3);
 
 
 t_arena *arena_init(size_t size);
@@ -105,6 +107,16 @@ void    new_vec3(t_vec3 *vec3, char **cvec);
 void	assign_plane_info(t_info *info, char **split);
 void assign_sphere_info(t_info *info, char **split);
 void assign_cylinder_info(t_info *info, char **split);
+void	free_all(t_info *info);
+
+/*        OPERATIONS                       */
+
+double    dot_calculation(t_vec3 vec1, t_vec3 vec2);
+double    vec_length(t_vec3 vec1);
+void    vec_normalize(t_vec3 *vec1);
+void    vec_substract(t_vec3 *vec1, t_vec3 vec2);
+double intersect_plane(t_ray ray, t_pl pl);
+double intersect_sphere(t_ray ray, t_sp sp);
 
 
 #endif
