@@ -117,6 +117,8 @@ void    vec_normalize(t_vec3 *vec1);
 void    vec_substract(t_vec3 *vec1, t_vec3 vec2);
 double intersect_plane(t_ray ray, t_pl pl);
 double intersect_sphere(t_ray ray, t_sp sp);
+void    get_point_from_ray(t_vec3 *point ,t_ray ray, double t);
+t_vec3    multiply_colors(t_vec3 startcolor , t_vec3 endcolor);
 
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 13:45:28 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/23 19:31:26 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/24 17:45:23 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,20 @@ void	draw(t_info *info)
 {
 	t_vec3	sky;
 	t_vec3	fog;
+	t_vec3	intersect_color;
+	t_vec3	intersect_point;
+	t_vec3	intersect_normal;
+	t_vec3	final_color;
+	t_vec3	to_light;
+	unsigned int	color;
 	unsigned int	col;
 	unsigned int	row;
-	unsigned int	color;
 	double	t;
 	double	x;
 	double	y;
 	double	nearest_t;
 	double	aspect_ratio;
+	double	intensity;
 
 	t = 0;
 	row = 0;
@@ -57,7 +63,10 @@ void	draw(t_info *info)
 	fog.x = 178;
 	fog.y = 178;
 	fog.z = 178;
-	print_vec3(info->ray.direc);
+	to_light.x = 1;
+	to_light.y = 1;
+	to_light.z = 1;
+	vec_normalize(&to_light);
 	while (row < HEIGHT)
 	{
 		col = 0;
@@ -72,20 +81,42 @@ void	draw(t_info *info)
 			x = x * aspect_ratio;
 			info->ray.direc.x = x;
 			info->ray.direc.y = y;
-			info->ray.direc.z = -1;
+			info->ray.direc.z = -2;
 			vec_normalize(&(info->ray).direc);
+
+			ft_bzero(&intersect_color, sizeof(t_vec3));
 			nearest_t = INFINITY;
 			t = intersect_sphere(info->ray, info->sp);
 			if (t < nearest_t)
 			{
 				nearest_t = t;
-				color = get_color(info->sp.rgb, info->sp.rgb, 0);
+				get_point_from_ray(&intersect_point, info->ray, t);
+				ft_memcpy(&intersect_normal, &intersect_point, sizeof(t_vec3));
+				vec_substract(&intersect_point, info->sp.center);
+				ft_memcpy(&intersect_color, &info->sp.rgb, sizeof(t_vec3));
+				//color = get_color(info->sp.rgb, info->sp.rgb, 0);
 			}
 			t = intersect_plane(info->ray, info->pl);
 			if (t < nearest_t)
 			{
 				nearest_t = t;
-				color = get_color(info->pl.rgb, fog, t * 0.008);
+				ft_memcpy(&intersect_normal, &info->pl.norm, sizeof(t_vec3));
+				ft_memcpy(&intersect_color, &info->pl.rgb, sizeof(t_vec3));
+				//color = get_color(info->pl.rgb, fog, t * 0.008);
+			}
+			if (nearest_t < INFINITY)
+			{
+				vec_normalize(&intersect_normal);
+				final_color = multiply_colors(intersect_color, info->l.rgb);
+				intensity = dot_calculation(intersect_normal, to_light);
+				if(intensity < 0)
+					intensity = 0;
+				intersect_color.x *= intensity;
+				intersect_color.y *=  intensity;
+				intersect_color.z *= intensity;
+				color = get_color(intersect_color, fog, t);
+				
+
 			}
 			if (nearest_t == INFINITY)
 				color = get_color(fog ,sky, info->ray.direc.y * 1.5);

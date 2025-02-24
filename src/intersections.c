@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   plane.c                                            :+:      :+:    :+:   */
+/*   intersections.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mquero <mquero@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 21:47:06 by mquero            #+#    #+#             */
-/*   Updated: 2025/02/23 14:39:58 by mquero           ###   ########.fr       */
+/*   Updated: 2025/02/24 10:32:30 by mquero           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ static double quadratic(double a, double b, double c)
     discriminant = (b * b) - (4 * a * c);
     if (discriminant < 0)
         return (INFINITY);
-
     discriminant = sqrt(discriminant);
     t0 = (-b - discriminant) * (1 / (2 * a));
     t1 = (-b + discriminant) * (1 / (2 * a));
